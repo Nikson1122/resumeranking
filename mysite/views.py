@@ -291,10 +291,12 @@ def ranking(request, id):
     job_data = PostJob.objects.get(id=id)
     print(job_data.id, job_data.title, job_data.company_name)
     jobfilename = job_data.company_name + '_' + job_data.title + '.txt'
-    job_desc = job_data.details + '\n' + job_data.responsibilities + '\n' + job_data.experience + '\n';
+    job_desc = job_data.details + '\n' + job_data.responsibilities + '\n' + job_data.experience + '\n'
     resumes_data = Apply_job.objects.filter(company_name=job_data.company_name, title=job_data.title,
                                             cv__isnull=False)
+    print("nikosn", resumes_data, job_data)
     result_arr = screen.res(resumes_data, job_data)
+    print(result_arr)
     return render(request, 'mysite/ranking.html',
                   {'items': result_arr, 'company_name': job_data.company_name, 'title': job_data.title})
 

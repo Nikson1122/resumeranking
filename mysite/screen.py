@@ -21,6 +21,7 @@ from collections import defaultdict
 from datetime import datetime
 from dateutil import relativedelta
 from typing import *
+from typing import Dict, List
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -512,21 +513,27 @@ def res(resumes_data, job_data):
             pass
 
     # ranking process
+    print(Resume_Vector ,"is this")
 
     for indx, file in enumerate(Resume_Vector):
         samples = file
-        name = Ordered_list_Resume[indx]
+        print("this is order list resume", Ordered_list_Resume, indx)
+        if indx > len(Ordered_list_Resume):
+            break
+        name = Ordered_list_Resume[indx-1]
         neigh = NearestNeighbors(n_neighbors=1)
         neigh.fit(samples)
         NearestNeighbors(algorithm='auto', leaf_size=30)
 
-        # score = round(neigh.kneighbors(Job_Desc)[0][0][0], 5)
+        score = round(neigh.kneighbors(Job_Desc)[0][0][0], 5)
         score = neigh.kneighbors(Job_Desc)[0][0][0]
         # print(score)
         result_arr[indx] = {'name': name, 'score': score}
+        
 
     result_arr = get_rank(result_arr)
     show_rank(result_arr, jobfilename)
 
     # return resultant shortlist
     return result_arr
+ 
